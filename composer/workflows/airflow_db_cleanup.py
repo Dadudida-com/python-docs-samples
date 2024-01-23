@@ -109,7 +109,7 @@ DATABASE_OBJECTS = [
     },
     {
         "airflow_db_model": TaskInstance,
-        "age_check_column": TaskInstance.execution_date
+        "age_check_column": TaskInstance.start_date
         if AIRFLOW_VERSION < ["2", "2", "0"]
         else TaskInstance.start_date,
         "keep_last": False,
@@ -174,7 +174,7 @@ try:
     DATABASE_OBJECTS.append(
         {
             "airflow_db_model": TaskFail,
-            "age_check_column": TaskFail.execution_date,
+            "age_check_column": TaskFail.start_date,
             "keep_last": False,
             "keep_last_filters": None,
             "keep_last_group_by": None,
@@ -468,24 +468,13 @@ def cleanup_sessions():
 
     try:
         logging.info("Deleting sessions...")
-        before = len(
-            session.execute(
-                text("SELECT * FROM session WHERE expiry < now()::timestamp(0);")
-            )
-            .mappings()
-            .all()
-        )
+        count_statement = "SELECT COUNT(*) AS cnt FROM session WHERE expiry < now()::timestamp(0);"
+        before = session.execute(text(count_statement)).one_or_none()["cnt"]
         session.execute(text("DELETE FROM session WHERE expiry < now()::timestamp(0);"))
-        after = len(
-            session.execute(
-                text("SELECT * FROM session WHERE expiry < now()::timestamp(0);")
-            )
-            .mappings()
-            .all()
-        )
-        logging.info("Deleted {} expired sessions.".format(before - after))
-    except Exception as e:
-        logging.error(e)
+        after = session.execute(text(count_statement)).one_or_none()["cnt"]
+        logging.info("Deleted %s expired sessions.", (before - after))
+    except Exception as err:
+        logging.exception(err)
 
     session.commit()
     session.close()
