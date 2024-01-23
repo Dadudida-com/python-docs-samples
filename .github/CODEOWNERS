@@ -87,11 +87,15 @@
 
 # Self-service
 # ---* Shared with DEE Teams
-/functions/**/*                        @GoogleCloudPlatform/functions-framework-google @GoogleCloudPlatform/torus-dpe @GoogleCloudPlatform/python-samples-reviewers
+/functions/**/*                        @GoogleCloudPlatform/cloud-functions-framework-github-role-write @GoogleCloudPlatform/torus-dpe @GoogleCloudPlatform/python-samples-reviewers
 /composer/**/*                         @GoogleCloudPlatform/cloud-dpes-composer @GoogleCloudPlatform/python-samples-reviewers
 /pubsub/**/*                           @GoogleCloudPlatform/api-pubsub-and-pubsublite @GoogleCloudPlatform/python-samples-reviewers
 /pubsublite/**/*                       @GoogleCloudPlatform/api-pubsub-and-pubsublite @GoogleCloudPlatform/python-samples-reviewers
 /cloud_tasks/**/*                      @GoogleCloudPlatform/torus-dpe @GoogleCloudPlatform/python-samples-reviewers
+
+# For practicing
+# ---* Use with codelabs to learn to submit samples
+/practice-folder/**/*                  engelke@google.com
 
 # ---* Fully Eng Owned
 /appengine/**/*                        @GoogleCloudPlatform/serverless-runtimes @GoogleCloudPlatform/python-samples-reviewers
